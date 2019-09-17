@@ -23,14 +23,24 @@
       border:5px solid black;
       border-radius:5px;
     }
+    body{
+      text-align:center;
+      align-content: center;
+    }
+    #theGifs{
+      text-align:center;
+      width:80vw;
+     
+      align-content:justify;
+      margin:auto;
+    }
   </style>
 </head>
 
 <body>
   <div id=gameButtons></div><br><br>
-  What games do you want to see: <input type=textfield id=gameInput><br>
-<br>
-  <button id=addButton>Add buttons</button><br><br>
+  What games do you want to see: <input type=textfield id=gameInput>
+  <button id=addButton>Add buttons</button>
   <div id=theGifs></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
@@ -51,7 +61,7 @@
       var thesegifs=$('<div>')
       for(var i =0; i<10; i++){
       console.log(response);
-      thesegifs.append('<span style=\'float:left; text-align:center;\'><img src='+response.data[i].images.original_still.url+' id='+i+' class=picture height=200px><br>'+response.data[i].rating.toUpperCase()+'</span>')
+      thesegifs.append('<span style=\'float:left; text-align:center;\'><img src='+response.data[i].images.original_still.url+' id='+i+' class=picture height=200px><br>Rating: '+response.data[i].rating.toUpperCase()+'</span>')
       }
       $('#theGifs').html(thesegifs)
     });
