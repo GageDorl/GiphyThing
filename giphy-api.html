@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+ <html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy API</title>
+  <style>
+    button{
+      float:center;
+      background:linear-gradient(115deg, blue,red);
+      border:0;
+      color:white;
+      font-family:'Arial', sans-serif;
+      border-radius:5px;
+      height:20px;
+      margin:2px;
+      content:'';
+      display:inline;
+      clear:both;
+    }
+    span{
+      margin:10px;
+      border:5px solid black;
+      border-radius:5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id=gameButtons></div><br><br>
+  What games do you want to see: <input type=textfield id=gameInput><br>
+<br>
+  <button id=addButton>Add buttons</button><br><br>
+  <div id=theGifs></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    
+    var games = ["Minecraft", "Borderlands", "Portal 2", "Spiderman PS4"];
+    var res;
+    $(document).on('click','.game', function clicked(){
+    
+    var searchTerm = $(this).attr('data-name');
+      console.log(searchTerm)
+    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=sdMNkPEshHN3O7sob5mSnpQUDNz29Rwt&q="+searchTerm+"&limit=25&offset=0&rating=G&lang=en";
+    
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      res=response;
+      var thesegifs=$('<div>')
+      for(var i =0; i<10; i++){
+      console.log(response);
+      thesegifs.append('<span style=\'float:left; text-align:center;\'><img src='+response.data[i].images.original_still.url+' id='+i+' class=picture height=200px><br>'+response.data[i].rating.toUpperCase()+'</span>')
+      }
+      $('#theGifs').html(thesegifs)
+    });
+
+  })
+  $('#addButton').on('click', function(){
+    games.push($('#gameInput').val());
+    renderButtons();
+  })
+
+  document.onkeyup=function(e){
+    if(e.key=='Enter'){
+      $('#addButton').click();
+    }
+
+  }
+
+
+   
+    $(document).on('click','.picture',function(){
+    var pic = $(this)
+    pic.attr('src', res.data[$(this).attr('id')].images.original.url)
+    pic.attr('class', 'gif');
+    stop;
+  })
+  $(document).on('click','.gif',function(){
+    $(this).attr('src', res.data[$(this).attr('id')].images.original_still.url)
+    $(this).attr('class', 'picture');
+    stop;
+  })
+
+
+
+
+
+function renderButtons() {
+
+$("#gameButtons").empty();
+
+for (var i = 0; i < games.length; i++) {
+  var a = $("<button>");
+   a.addClass("game");
+  a.attr("data-name", games[i]);
+  a.text(games[i]);
+  $("#gameButtons").append(a);
+}
+}
+renderButtons();
+  </script>
+
+</body>
+
+</html>
